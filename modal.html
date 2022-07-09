@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="hostloc-blocker-panel" class="modal">
+        <div class="modal-title">
+            <p>Hostloc 屏蔽插件设置面板</p>
+        </div>
+        <div class="modal-content">
+            <div class="column api-setting">
+                <div class="field">
+                    <label for="">Pantry API Key</label>
+                    <input type="text" placeholder="没有就不填" name="pantry-api-key">
+                </div>
+
+                <div class="field">
+                    <label for="">Pantry Basket</label>
+                    <input type="text" placeholder="没有就不填" name="pantry-basket-name">
+                </div>
+                <p class="help">如果填入了Pantry API参数，就可以将配置项保存到云端。<a href="https://getpantry.cloud/" target="_blank">点此注册</a></p>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <label>屏蔽发帖</label>
+                    <p class="help">输入用户名，每行一个</p>
+                    <textarea name="blocked-user" id="blocked-user" cols="15" rows="15"></textarea>
+                </div>
+                <div class="column">
+                    <label>屏蔽签名</label>
+                    <p class="help">输入用户名，每行一个</p>
+                    <textarea name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="15"></textarea>
+                </div>
+                <div class="column">
+                    <label>屏蔽关键字</label>
+                    <p class="help">输入关键字，每行一个</p>
+                    <textarea name="blocked-keyword" id="blocked-keyword" cols="15" rows="15"></textarea>
+                </div>
+            </div>
+        </div>
+      
+        <div class="modal-footer">
+          <button class="save">保存并关闭</button>
+        </div>
+      </div>
+
+      <style>
+        body{
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #hostloc-blocker-panel{
+            background-color: white;
+            position: fixed;
+            left: 50%;
+            top: 100px;
+            transform: translateX(-50%);
+            padding: 20px;
+            width: 500px;
+            border-radius: 10px;
+            font-family:"Microsoft Yahei",Georgia, 'Times New Roman', Times, serif;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        }
+
+        #hostloc-blocker-panel .modal-content p{
+            margin-bottom: 0;
+        }
+
+        #hostloc-blocker-panel ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #hostloc-blocker-panel .columns{
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        #hostloc-blocker-panel label{
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        #hostloc-blocker-panel .modal-title{
+            text-align: center;
+            border-bottom: 1px solid rgb(238, 238, 238);
+        }
+
+        #hostloc-blocker-panel .modal-content {
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgb(238, 238, 238);
+        }
+        #hostloc-blocker-panel .modal-content .help{
+            color: rgb(43, 43, 43);
+            font-size: 11px;
+            margin-top: 0;
+        }
+        #hostloc-blocker-panel .modal-content .api-setting{
+            margin-top: 20px;
+        }
+        #hostloc-blocker-panel .modal-content .api-setting .field{
+            display: flex;
+            width: 100%;
+            position: relative;
+            height: 40px;
+            align-items: center;
+        }
+
+        #hostloc-blocker-panel .modal-content .api-setting label{
+            line-height: 40px;
+            display: block;
+            width: 30%;
+            height: 100%;
+        }
+
+        #hostloc-blocker-panel .modal-content .api-setting input{
+            height: 25px;
+            display: block;
+            width: 70%;
+
+        }
+
+        #hostloc-blocker-panel .modal-content .api-setting::after{
+            clear: both;
+        }
+
+        #hostloc-blocker-panel .modal-content textarea, 
+        #hostloc-blocker-panel .modal-content input{
+            border:1px solid #ddd;
+            border-radius: 5px;
+            color: #363636;
+            
+            border-color: 1px solid #b5b5b5;
+            font-size: 15px;
+           
+        }
+        #hostloc-blocker-panel textarea:hover, 
+        #hostloc-blocker-panel input:hover{
+            border-color: #b5b5b5;
+        }
+        #hostloc-blocker-panel textarea:focus, 
+        #hostloc-blocker-panel input:focus{
+            outline:none
+        }
+
+        #hostloc-blocker-panel .modal-footer{
+            padding:30px 30px 0;
+            text-align: right;
+        }
+
+        #hostloc-blocker-panel .modal-footer button{
+            padding: 5px 15px;
+            border-color: #235994;
+            background-color: #06C;
+            background-position: 0 -48px;
+            color: #FFF;
+
+        }
+      </style>
+</body>
+</html>
