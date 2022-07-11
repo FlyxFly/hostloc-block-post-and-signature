@@ -249,17 +249,17 @@
                             <div class="column">
                                 <label>屏蔽发帖</label>
                                 <p class="help">输入用户名，每行一个</p>
-                                <textarea name="blocked-user" id="blocked-user" cols="15" rows="15"></textarea>
+                                <textarea name="blocked-user" id="blocked-user" cols="15" rows="13"></textarea>
                             </div>
                             <div class="column">
                                 <label>屏蔽签名</label>
                                 <p class="help">输入用户名，每行一个</p>
-                                <textarea name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="15"></textarea>
+                                <textarea name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="13"></textarea>
                             </div>
                             <div class="column">
                                 <label>屏蔽关键字</label>
                                 <p class="help">输入关键字，每行一个</p>
-                                <textarea name="blocked-keyword" id="blocked-keyword" cols="15" rows="15"></textarea>
+                                <textarea name="blocked-keyword" id="blocked-keyword" cols="15" rows="13"></textarea>
                             </div>
                         </div>
                     </div>
@@ -401,7 +401,16 @@
             const textareaBlockedKeyword = panel.querySelector('textarea[name="blocked-keyword"]');
             const openPanelLink = document.querySelector('#show-block-panel');
 
-            openPanelLink.addEventListener('click',()=>{
+            panel.addEventListener('click',(event)=>{
+                event.stopPropagation();
+            })
+
+            document.body.addEventListener('click',()=>{
+                panel.classList.remove('is-active');
+            })
+
+            openPanelLink.addEventListener('click',(event)=>{
+                event.stopPropagation();
                 textareaBlockedKeyword.value = this.config.blockedKeyword.join('\n');
                 textareaBlockedSignatureUser.value = this.config.blockedSignatureUser.join('\n');
                 textareaBlockedUser.value = this.config.blockedUser.join('\n');
@@ -418,18 +427,19 @@
                 if(!textareaBlockedKeyword.value && !textareaBlockedSignatureUser.value && !textareaBlockedUser.value){
                     this.modifyCloudData('get');
                     return;
+                }else{
+                    // 将api key 和数据保存到本地
+                    this.config.blockedKeyword = trimArray(textareaBlockedKeyword.value.split('\n'));
+                    this.config.blockedSignatureUser = trimArray(textareaBlockedSignatureUser.value.split('\n'));
+                    this.config.blockedUser = trimArray(textareaBlockedUser.value.split('\n'));
+
+                    
+                    // 保存到本地
+                    this.saveToLocal();
+                    // 将数据保存到云端
+                    this.modifyCloudData('save');
+
                 }
-
-                // 将api key 和数据保存到本地
-                this.config.blockedKeyword = trimArray(textareaBlockedKeyword.value.split('\n'));
-                this.config.blockedSignatureUser = trimArray(textareaBlockedSignatureUser.value.split('\n'));
-                this.config.blockedUser = trimArray(textareaBlockedUser.value.split('\n'));
-
-                
-                // 保存到本地
-                this.saveToLocal();
-                // 将数据保存到云端
-                this.modifyCloudData('save');
                 panel.classList.remove('is-active');
             })
         }
