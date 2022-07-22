@@ -1,7 +1,7 @@
     // ==UserScript==
     // @name         Hostloc根据关键字和用户名屏蔽帖子
     // @namespace    https://hostloc.com/
-    // @version      0.2.1
+    // @version      0.2.2
     // @description  根据关键字和用户名屏蔽帖子，根据用户名屏蔽签名
     // @author       kiwi
     // @homepage     https://github.com/FlyxFly/hostloc-block-post-and-signature
@@ -166,26 +166,28 @@
                 const blockedKeyword = this.config.blockedKeyword;
                 const contentStorage = this.contentStorage;
                 const blockedUser = this.config.blockedUser;
-                document.querySelectorAll('#postlist>div').forEach((item)=>{
-                    if(!item.id.includes('post_')){
+                document.querySelectorAll('#postlist>div').forEach((post)=>{
+                    if(!post.id.includes('post_')){
                         return false;
                     }
-                    const userLink=item.querySelector('a.xw1');
+                    const userLink=post.querySelector('a.xw1');
                     if(userLink){
                         const userName=userLink.innerText.trim();
                         if(userName && blockedUser.includes(userName)){
-                            item.style.display='none';
-                        }else if(blockedSignatureUser.includes(userName)){
-                            const signature=item.querySelector('div.sign');
+                            post.style.display='none';
+                            return false;
+                        }
+                        if(blockedSignatureUser.includes(userName) && post.querySelector('div.sign')){
+                            const signature=post.querySelector('div.sign');
                             const contentText=signature.innerText;
                             const contentHTML=signature.innerHTML;
-                            const storageKey=item.id+'signature';
+                            const storageKey=post.id+'signature';
                             contentStorage[storageKey]=contentHTML;
                             signature.innerHTML=`<span style="font-style:italic;font-size:10px;color:gray" class="hidden-by-script" data-restore-key="${storageKey}" title="${contentText}">已屏蔽,鼠标移到此处查看内容,点击还原内容</span>`;
                         }
                     }
 
-                    const tds=item.querySelectorAll('td');
+                    const tds=post.querySelectorAll('td');
                     tds.forEach((td)=>{
                         if(td.id.includes('postmessage_')){
                             const content=td.innerText;
@@ -193,8 +195,8 @@
                                 if(content.includes(blockedKeyword[i])){
                                     const contentHTML=td.innerHTML;
                                     const contentText=td.innerText;
-                                    contentStorage[item.id]=contentHTML;
-                                    td.innerHTML=`<span style="font-style:italic;font-size:10px;color:gray" class="hidden-by-script" data-restore-key="${item.id}" title="${content}">已屏蔽，鼠标移到此处查看内容,点击还原内容</span>`;
+                                    contentStorage[post.id]=contentHTML;
+                                    td.innerHTML=`<span style="font-style:italic;font-size:10px;color:gray" class="hidden-by-script" data-restore-key="${post.id}" title="${content}">已屏蔽，鼠标移到此处查看内容,点击还原内容</span>`;
                                     break;
                                 }
 
@@ -466,7 +468,8 @@
                     document.querySelector('#postlist').addEventListener('click',(e)=>{
                         const item=e.target;
                         if(item.className.includes('hidden-by-script')){
-                            item.innerHTML=this.contentStorage[item.dataset.restoreKey]
+                            item.innerHTML=this.contentStorage[item.dataset.restoreKey];
+                            item.title='';
                         }
                         item.style='';
                     })
