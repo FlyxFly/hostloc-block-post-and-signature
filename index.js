@@ -19,17 +19,15 @@
         }
 
 
-        /**
-         * 移除数组中的空元素
-         * 
-         * @param {array} Array 要处理的数组
-         * @return {array} Array 删除空元素后的数组
-        **/
-        const trimArray = function(arr){
-            return arr.filter((x)=>{
-                return x;
-            })
+        // 移除数组中的空元素
+        if(!Array.prototype.trim){
+            Array.prototype.trim = function removeEmptyElements () {
+                return this.filter((x)=>{
+                    return x;
+                })
+            }
         }
+
 
         /**
          * @param {String} HTML representing a single element
@@ -421,17 +419,18 @@
                 });
 
                 saveButton.addEventListener('click',()=>{
-                    // 如果仅输入了apikey 则表示从云端拉取数据，将覆盖本地数据
                     this.config.pantry.APIKey = inputPantryAPIKey.value;
                     this.config.pantry.basket = inputBasketName.value;
+                    
+                    // 如果仅输入了apikey 则表示从云端拉取数据，将覆盖本地数据
                     if(!textareaBlockedKeyword.value && !textareaBlockedSignatureUser.value && !textareaBlockedUser.value){
                         this.modifyCloudData('get');
                         return;
                     }else{
                         // 将api key 和数据保存到本地
-                        this.config.blockedKeyword = trimArray(textareaBlockedKeyword.value.split('\n'));
-                        this.config.blockedSignatureUser = trimArray(textareaBlockedSignatureUser.value.split('\n'));
-                        this.config.blockedUser = trimArray(textareaBlockedUser.value.split('\n'));
+                        this.config.blockedKeyword = textareaBlockedKeyword.value.split('\n').trim();
+                        this.config.blockedSignatureUser = textareaBlockedSignatureUser.value.split('\n').trim();
+                        this.config.blockedUser = textareaBlockedUser.value.split('\n').trim();
 
                         
                         // 保存到本地
