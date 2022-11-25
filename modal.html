@@ -27,18 +27,18 @@
             <div class="columns">
                 <div class="column">
                     <label>屏蔽发帖</label>
-                    <p class="help">输入用户名，每行一个</p>
-                    <textarea name="blocked-user" id="blocked-user" cols="15" rows="15"></textarea>
+                    <!-- <p class="help">输入用户名，每行一个</p> -->
+                    <textarea title="输入用户名，每行一个，区分大小写" name="blocked-user" id="blocked-user" cols="15" rows="15"></textarea>
                 </div>
                 <div class="column">
                     <label>屏蔽签名</label>
-                    <p class="help">输入用户名，每行一个</p>
-                    <textarea name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="15"></textarea>
+                    <!-- <p class="help">输入用户名，每行一个</p> -->
+                    <textarea title="输入用户名，每行一个，区分大小写" name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="15"></textarea>
                 </div>
                 <div class="column">
                     <label>屏蔽关键字</label>
-                    <p class="help">输入关键字，每行一个</p>
-                    <textarea name="blocked-keyword" id="blocked-keyword" cols="15" rows="15"></textarea>
+                    <!-- <p class="help">输入关键字，每行一个</p> -->
+                    <textarea title="输入关键字，每行一个，不区分大小写" name="blocked-keyword" id="blocked-keyword" cols="15" rows="15"></textarea>
                 </div>
             </div>
         </div>
@@ -116,6 +116,7 @@
             display: block;
             width: 30%;
             height: 100%;
+
         }
 
         #hostloc-blocker-panel .modal-content .api-setting input{

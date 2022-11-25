@@ -29,6 +29,19 @@
         }
 
 
+        // 查询数组是否存在某个值，忽略大小写
+        if(!Array.prototype.contains){
+            Array.prototype.contains = function checkIfInArray (target) {
+                for(let i=0;i<this.length;i++){
+                    if(this[i].toUpperCase().includes(target.toUpperCase())){
+                        return true;
+                    }
+                }
+                return false
+            }
+        }
+
+
         /**
          * @param {String} HTML representing a single element
          * @return {Element}
@@ -140,7 +153,7 @@
                     if(item.id.includes('normalthread')){
                         const title=item.querySelector('a.s.xst').innerText;
                         for (let i = blockedKeyword.length - 1; i >= 0; i--) {
-                            if(title.includes(blockedKeyword[i])){
+                            if(title.toUpperCase().includes(blockedKeyword[i].toUpperCase())){
                                 // item.querySelector('a.s.xst').innerText='已屏蔽';
                                 item.style.display='none';
                                 break;
@@ -150,8 +163,8 @@
 
                         const nameA=item.querySelectorAll('td.by')[0].querySelector('a');
                         if(nameA){
-                            const userName=nameA.innerText.trim();
-                            if(blockedUser.includes(userName)){
+                            const userName=nameA.innerText.trim().toUpperCase();
+                            if(blockedUser.contains(userName)){
                                 // item.querySelector('a.s.xst').innerText='已屏蔽';
                                 item.style.display='none';
                             }
@@ -160,6 +173,7 @@
                 })
 
             }
+
 
             hideReplyAndSignature(){
                 const blockedSignatureUser = this.config.blockedSignatureUser;
@@ -173,10 +187,13 @@
                     const userLink=post.querySelector('a.xw1');
                     if(userLink){
                         const userName=userLink.innerText.trim();
+                        // 根据用户名屏蔽发帖
                         if(userName && blockedUser.includes(userName)){
                             post.style.display='none';
                             return false;
                         }
+
+                        // 根据用户名屏蔽签名
                         if(blockedSignatureUser.includes(userName) && post.querySelector('div.sign')){
                             const signature=post.querySelector('div.sign');
                             const contentText=signature.innerText;
@@ -189,10 +206,12 @@
 
                     const tds=post.querySelectorAll('td');
                     tds.forEach((td)=>{
+                        // 查找帖子内容容器: td.postmessage_{thread_id}
                         if(td.id.includes('postmessage_')){
                             const content=td.innerText;
                             for (let i = blockedKeyword.length - 1; i >= 0; i--) {
-                                if(content.includes(blockedKeyword[i])){
+                                // 根据关键字屏蔽发帖内容
+                                if(content.toUpperCase().includes(blockedKeyword[i].toUpperCase())){
                                     const contentHTML=td.innerHTML;
                                     const contentText=td.innerText;
                                     contentStorage[post.id]=contentHTML;
@@ -248,17 +267,17 @@
                             <div class="columns">
                                 <div class="column">
                                     <label>屏蔽发帖</label>
-                                    <p class="help">输入用户名，每行一个</p>
+                                    <p class="help">每行一个<strong>区分大小写</strong></p>
                                     <textarea name="blocked-user" id="blocked-user" cols="15" rows="13"></textarea>
                                 </div>
                                 <div class="column">
                                     <label>屏蔽签名</label>
-                                    <p class="help">输入用户名，每行一个</p>
+                                    <p class="help">每行一个,<strong>区分大小写</strong></p>
                                     <textarea name="blocked-signature-user" id="blocked-signature-user" cols="15" rows="13"></textarea>
                                 </div>
                                 <div class="column">
                                     <label>屏蔽关键字</label>
-                                    <p class="help">输入关键字，每行一个</p>
+                                    <p class="help">每行一个，<strong>不分大小写</strong></p>
                                     <textarea name="blocked-keyword" id="blocked-keyword" cols="15" rows="13"></textarea>
                                 </div>
                             </div>
@@ -470,8 +489,9 @@
                         if(item.className.includes('hidden-by-script')){
                             item.innerHTML=this.contentStorage[item.dataset.restoreKey];
                             item.title='';
+                            item.style='';
                         }
-                        item.style='';
+                        
                     })
                 }
                 
