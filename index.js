@@ -1,7 +1,7 @@
     // ==UserScript==
     // @name         Hostloc根据关键字和用户名屏蔽帖子
     // @namespace    https://hostloc.com/
-    // @version      0.2.3
+    // @version      0.2.4
     // @description  根据关键字和用户名屏蔽帖子，根据用户名屏蔽签名
     // @author       kiwi
     // @homepage     https://github.com/FlyxFly/hostloc-block-post-and-signature
