@@ -1,7 +1,7 @@
     // ==UserScript==
     // @name         Hostloc根据关键字和用户名屏蔽帖子
     // @namespace    https://hostloc.com/
-    // @version      0.2.2
+    // @version      0.2.3
     // @description  根据关键字和用户名屏蔽帖子，根据用户名屏蔽签名
     // @author       kiwi
     // @homepage     https://github.com/FlyxFly/hostloc-block-post-and-signature
@@ -122,8 +122,9 @@
                         .then((data)=>{
                             this.config = data;
                             this.saveToLocal();
-                            alert('获取云端数据成功，请刷新页面');
-                            return this.restoreFromLocal();
+                            this.restoreFromLocal();
+                            this.startBlockProcess();
+                            console.log('Got data from cloud.',data);
                         })
                         
                         break;
@@ -136,7 +137,7 @@
                             },
                             body:JSON.stringify(this.config)
                         }).then((res)=>{
-                            console.log(res);
+                            console.log('Save data to cloud',res);
                         })
                         break;
 
@@ -467,13 +468,7 @@
 
 
 
-
-            init(){
-                this.addSettingPanel();
-                this.addSettingButton();
-                this.addPanelEvents();
-                this.restoreFromLocal();
-            
+            startBlockProcess(){
                 if(location.href.includes('forum')){
                     this.hideFromList();
                 }
@@ -494,6 +489,15 @@
                         
                     })
                 }
+            }
+
+            init(){
+                this.addSettingPanel();
+                this.addSettingButton();
+                this.addPanelEvents();
+                this.restoreFromLocal();
+            
+                this.startBlockProcess();
                 
             }
 
