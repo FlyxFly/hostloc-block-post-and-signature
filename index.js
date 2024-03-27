@@ -1,7 +1,7 @@
     // ==UserScript==
     // @name         Hostloc根据关键字和用户名屏蔽帖子
     // @namespace    https://hostloc.com/
-    // @version      0.2.4
+    // @version      0.2.5
     // @description  根据关键字和用户名屏蔽帖子，根据用户名屏蔽签名
     // @author       kiwi
     // @homepage     https://github.com/FlyxFly/hostloc-block-post-and-signature
@@ -9,6 +9,7 @@
     // @match        https://hostloc.com/thread-*
     // @match        https://hostloc.com/forum.php?mod=viewthread&tid=*
     // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+    // @require      https://unpkg.com/sweetalert/dist/sweetalert.min.js
     // ==/UserScript==
 
     (function() {
@@ -130,6 +131,7 @@
                         break;
 
                     case 'save':
+                        swal('正在保存到云端，请勿跳转到其他页面.');
                         fetch(url, {
                             method:'POST',
                             headers: {
@@ -137,7 +139,10 @@
                             },
                             body:JSON.stringify(this.config)
                         }).then((res)=>{
+                            swal('数据保存到云端成功','你可以跳转到其他页面了','success');
                             console.log('Save data to cloud',res);
+                        }).catch((e)=>{
+                            swal('数据保存到云端失败',e.message,'error');
                         })
                         break;
 
@@ -506,5 +511,4 @@
 
         const app=new HostLocBlocker();
         app.init();
-    
     })();
